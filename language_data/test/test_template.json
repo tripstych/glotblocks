@@ -1,0 +1,275 @@
+{
+  "definitions": {
+    "morphology": {
+      "desc": "Suffix definitions linking Grammar -> Elements",
+      "past_tense": {
+        "anchor": "metal",
+        "shape": "VC",
+        "note": "The past is fixed and rigid."
+      },
+      "future_tense": {
+        "anchor": "air",
+        "shape": "V(L)",
+        "note": "The future is open and ethereal."
+      },
+      "plural": {
+        "anchor": "earth",
+        "shape": "VC",
+        "note": "Accumulation/Earth. Short accumulation shape."
+      },
+      "continuous": {
+        "anchor": "water",
+        "shape": "VCV",
+        "note": "Flowing/Water. Longer, open shape."
+      },
+      "agent": {
+        "anchor": "fire",
+        "shape": "C",
+        "note": "The Spark/Fire. Single consonant punch."
+      },
+      "past": {
+        "anchor": "metal",
+        "shape": "VC",
+        "note": "Fixed/Metal. Hard stop."
+      }
+    },
+    "desc": "Basic Phoneme Categories",
+    "C": [
+      "p",
+      "t",
+      "k",
+      "b",
+      "d",
+      "g",
+      "m",
+      "n",
+      "s",
+      "z",
+      "l",
+      "r",
+      "h",
+      "w",
+      "y"
+    ],
+    "V": [
+      "a",
+      "e",
+      "i",
+      "o",
+      "u"
+    ],
+    "Stops": [
+      "p",
+      "t",
+      "k",
+      "b",
+      "d",
+      "g"
+    ],
+    "Fricatives": [
+      "f",
+      "v",
+      "s",
+      "z",
+      "sh",
+      "h"
+    ],
+    "Liquids": [
+      "l",
+      "r",
+      "w",
+      "y"
+    ],
+    "Nasals": [
+      "m",
+      "n",
+      "ng"
+    ]
+  },
+  "constraints": {
+    "desc": "Standard Rules",
+    "no_double_start": {
+      "pattern": "^[^aeiou]{2}"
+    },
+    "no_triple_consonant": {
+      "pattern": "[^aeiou]{3}"
+    },
+    "must_end_vowel": {
+      "pattern": "[^aeiou]$"
+    }
+  },
+  "orthography": {
+    "desc": "Spelling Styles",
+    "default": [
+      {
+        "from": "th",
+        "to": "\u00de"
+      },
+      {
+        "from": "ing",
+        "to": "\u16dd"
+      },
+      {
+        "from": "ch",
+        "to": "\u16bb"
+      },
+      {
+        "from": "h",
+        "to": "\u16ba"
+      }
+    ]
+  },
+  "ontology": {
+    "desc": "Grammar (POS) and Elements",
+    "adjective": {
+      "weight": 1.0,
+      "note": "POS: Descriptors. Flowing.",
+      "add_shapes": [
+        "(V)CV",
+        "CV(C)V"
+      ]
+    },
+    "adverb": {
+      "weight": 1.0,
+      "add_shapes": [
+        "V(C)V",
+        "(C)VCV"
+      ],
+      "note": "POS: Modifiers. Long/Open."
+    },
+    "noun": {
+      "weight": 1.0,
+      "add_shapes": [
+        "(C)VCV",
+        "CVCV",
+        "CVCCV"
+      ],
+      "add_rules": [
+        "noun_ending_rule"
+      ],
+      "note": "POS: Objects. Ends in Vowel."
+    },
+    "satellite": {
+      "weight": 1.0,
+      "add_shapes": [
+        "(V)CV",
+        "CV"
+      ],
+      "note": "POS: Satellite Adj. Punchy."
+    },
+    "verb": {
+      "weight": 1.0,
+      "add_shapes": [
+        "(C)VC",
+        "CVCVC"
+      ],
+      "add_rules": [
+        "verb_ending_rule"
+      ],
+      "note": "POS: Actions. Ends in Consonant."
+    },
+    "particle": {
+      "weight": 1.0,
+      "add_shapes": [
+        "CV",
+        "V"
+      ],
+      "note": "POS: Articles/Determiners. Short."
+    },
+    "preposition": {
+      "weight": 1.0,
+      "add_shapes": [
+        "CV",
+        "CVC"
+      ],
+      "note": "POS: Connectors. Brief."
+    },
+    "pronoun": {
+      "weight": 1.0,
+      "add_shapes": [
+        "CV",
+        "CVV"
+      ],
+      "note": "POS: References. Simple."
+    },
+    "conjunction": {
+      "weight": 1.0,
+      "add_shapes": [
+        "CV",
+        "VC"
+      ],
+      "note": "POS: Joiners. Minimal."
+    },
+    "fire": {
+      "weight": 2.5,
+      "note": "ELEM: Sharp, hissing sounds.",
+      "add_sounds": [
+        "Stops",
+        "V",
+        "C",
+        "Liquids"
+      ]
+    },
+    "wood": {
+      "weight": 2.5,
+      "note": "ELEM: Hollow, wooden sounds.",
+      "add_sounds": [
+        "Liquids",
+        "V",
+        "Stops"
+      ]
+    },
+    "earth": {
+      "weight": 1.0,
+      "add_sounds": [
+        "Nasals",
+        "Liquids",
+        "V",
+        "V"
+      ]
+    },
+    "metal": {
+      "weight": 1.0,
+      "add_sounds": [
+        "Fricatives",
+        "V",
+        "Fricatives",
+        "Stops"
+      ]
+    },
+    "water": {
+      "weight": 1.0,
+      "add_sounds": [
+        "Liquids",
+        "V",
+        "Stops"
+      ]
+    },
+    "air": {
+      "weight": 1.0,
+      "add_sounds": [
+        "Liquids",
+        "Stops",
+        "V"
+      ]
+    },
+    "life": {
+      "weight": 1.0,
+      "add_sounds": [
+        "Liquids",
+        "Nasals",
+        "V",
+        "V"
+      ]
+    },
+    "death": {
+      "weight": 1.0,
+      "add_sounds": [
+        "V",
+        "V",
+        "Fricatives",
+        "Fricatives"
+      ]
+    }
+  }
+}

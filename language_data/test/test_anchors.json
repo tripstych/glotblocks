@@ -1,0 +1,26 @@
+{
+  "fire": [
+    "Fire",
+    "Sharp, explosive sounds"
+  ],
+  "water": [
+    "Water",
+    "Flowing, smooth sounds"
+  ],
+  "earth": [
+    "Earth",
+    "Deep, grounded sounds"
+  ],
+  "air": [
+    "Air",
+    "Breathy, light sounds"
+  ],
+  "life": [
+    "Life",
+    "Open, vibrant sounds"
+  ],
+  "death": [
+    "Death",
+    "Closed, final sounds"
+  ]
+}

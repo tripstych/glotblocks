@@ -1,0 +1,165 @@
+{
+  "definitions": {
+    "desc": "Phoneme categories",
+    "C": [
+      "p",
+      "t",
+      "k",
+      "m",
+      "n",
+      "ng",
+      "h",
+      "w",
+      "l",
+      "r"
+    ],
+    "V": [
+      "a",
+      "e",
+      "i",
+      "o",
+      "u",
+      "aa",
+      "ee",
+      "ii",
+      "oo",
+      "uu"
+    ],
+    "Stops": [
+      "p",
+      "t",
+      "k"
+    ],
+    "Fricatives": [
+      "h"
+    ],
+    "Liquids": [
+      "l",
+      "r",
+      "w"
+    ],
+    "Nasals": [
+      "m",
+      "n",
+      "ng"
+    ],
+    "morphology": {
+      "past_tense": {
+        "anchor": "metal",
+        "shape": "VC",
+        "note": "Fixed, completed"
+      },
+      "future_tense": {
+        "anchor": "air",
+        "shape": "V",
+        "note": "Open, potential"
+      },
+      "plural": {
+        "anchor": "earth",
+        "shape": "VC",
+        "note": "Accumulation"
+      },
+      "continuous": {
+        "anchor": "water",
+        "shape": "VCV",
+        "note": "Flowing, ongoing"
+      },
+      "agent": {
+        "anchor": "fire",
+        "shape": "C",
+        "note": "Active, doing"
+      }
+    }
+  },
+  "constraints": {
+    "desc": "Phonotactic rules"
+  },
+  "orthography": {
+    "desc": "Spelling rules",
+    "default": []
+  },
+  "ontology": {
+    "desc": "Sound symbolism mappings",
+    "noun": {
+      "add_shapes": [
+        "CV",
+        "CVCV",
+        "CVCCV"
+      ]
+    },
+    "verb": {
+      "add_shapes": [
+        "CVC",
+        "CVCVC"
+      ]
+    },
+    "adjective": {
+      "add_shapes": [
+        "VCV",
+        "CVCV"
+      ]
+    },
+    "adverb": {
+      "add_shapes": [
+        "VCV",
+        "VCVC"
+      ]
+    },
+    "particle": {
+      "weight": 1.0,
+      "add_shapes": []
+    },
+    "conjunction": {
+      "weight": 1.0,
+      "add_shapes": []
+    },
+    "light": {
+      "weight": 1.5,
+      "add_sounds": [
+        "Fricatives",
+        "V"
+      ],
+      "note": "ELEM: Bright, clear sounds"
+    },
+    "dark": {
+      "weight": 1.5,
+      "add_sounds": [
+        "Stops",
+        "Nasals"
+      ],
+      "note": "ELEM: Muted, heavy sounds"
+    },
+    "order": {
+      "weight": 1.5,
+      "add_sounds": [
+        "Stops",
+        "Nasals"
+      ],
+      "note": "ELEM: Regular, structured sounds"
+    },
+    "chaos": {
+      "weight": 1.5,
+      "add_sounds": [
+        "Fricatives",
+        "Liquids"
+      ],
+      "note": "ELEM: Unpredictable, varied sounds"
+    },
+    "time": {
+      "weight": 1.5,
+      "add_sounds": [
+        "Fricatives",
+        "V"
+      ],
+      "note": "ELEM: Continuous, flowing sounds"
+    },
+    "space": {
+      "weight": 1.5,
+      "add_sounds": [
+        "V",
+        "Liquids"
+      ],
+      "note": "ELEM: Open, expansive sounds"
+    }
+  }
+}

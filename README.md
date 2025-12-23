@@ -52,9 +52,8 @@ python -m spacy download en_core_web_lg
 4. Download NLTK WordNet data:
 
 ```python
-import nltk
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+python -m nltk.downloader wordnet
+python -m nltk.downloader omw-1.4
 ```
 
 ## Quick Start

@@ -155,7 +155,7 @@ combinations create different sound patterns!
         
         dialog = tk.Toplevel(self.parent)
         dialog.title("Live Preview Help")
-        dialog.geometry("500x400")
+        dialog.geometry("500x450")
         
         text = scrolledtext.ScrolledText(dialog, wrap=tk.WORD, font=('Arial', 10))
         text.pack(fill='both', expand=True, padx=10, pady=10)

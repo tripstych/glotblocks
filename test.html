@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		    <title>Credit Card Autofill Test Form</title>
+	</head>
+	<body>
+
+		<h2>Please fill out your payment information:</h2>
+
+		<form action="#" method="post">
+			    <div>
+				            <label for="ccname">Name on card:</label>
+					            <input type="text" id="ccname" name="ccname" autocomplete="cc-name" required>
+						        </div>
+							    <div>
+								            <label for="ccnumber">Card Number:</label>
+									            <input type="text" id="ccnumber" name="cardnumber" autocomplete="cc-number" required>
+										        </div>
+											    <div>
+												            <label for="ccexp">Expiry Date (MM/YYYY):</label>
+													            <input type="text" id="ccexp" name="cc-exp" placeholder="MM/YYYY" autocomplete="cc-exp" required>
+														        </div>
+															    <div>
+																            <label for="cccvc">CVC:</label>
+																	            <input type="text" id="cccvc" name="cvc" autocomplete="cc-csc" required>
+																		        </div>
+																			    <button type="submit">Submit (to trigger save prompt)</button>
+		</form>
+
+	</body>
+</html>
+

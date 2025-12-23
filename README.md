@@ -34,6 +34,11 @@ Translate English sentences into your constructed language.
 
 ![Translator](screenshots/translator.png)
 
+### Live Word Generator
+See exactly how words are built step-by-step, with anchor weights, sound pools, and constraint checking.
+
+![Generator Process View](screenshots/generator_process_view.png)
+
 ## Installation
 
 1. Ensure Python 3.8+ is installed with tkinter
@@ -82,6 +87,10 @@ modulex/
 ├── conlang_build_dictionaries.py # Generate full dictionary
 ├── conlang_translate.py         # Translation engine
 ├── conlang_language_paths.py    # File path utilities
+├── documentation/
+│   ├── conlang_live_preview.py  # Live word generator demo
+│   ├── glotblocks_process_flow.html  # Visual process flow diagram
+│   └── INTEGRATION_GUIDE.md     # Developer integration guide
 └── language_data/
     ├── default/                 # Default language files
     │   ├── default_template.json

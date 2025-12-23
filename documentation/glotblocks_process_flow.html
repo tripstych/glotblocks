@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlotBlocks - How It Works</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-medium: #1a1f3a;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff6b9d;
+            --accent-tertiary: #ffd93d;
+            --text-light: #e8edf5;
+            --text-muted: #8b92a9;
+            --card-bg: #151a2e;
+        }
+        
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0d1425 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        .flow-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        
+        .flow-step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .flow-step:nth-child(1) { animation-delay: 0.1s; }
+        .flow-step:nth-child(2) { animation-delay: 0.3s; }
+        .flow-step:nth-child(3) { animation-delay: 0.5s; }
+        .flow-step:nth-child(4) { animation-delay: 0.7s; }
+        .flow-step:nth-child(5) { animation-delay: 0.9s; }
+        
+        .flow-step:nth-child(even) {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .flow-step:nth-child(even) .step-visual {
+            order: 2;
+        }
+        
+        .flow-step:nth-child(even) .step-content {
+            order: 1;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+        
+        .step-content {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 217, 255, 0.2);
+        }
+        
+        .step-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+        }
+        
+        .step-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-example {
+            background: var(--bg-medium);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-tertiary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .step-visual {
+            background: var(--bg-medium);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .visual-elements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .element-box {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(255, 107, 157, 0.1));
+            border: 2px solid rgba(0, 217, 255, 0.3);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .element-box:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-primary);
+        }
+        
+        .arrow-down {
+            width: 3px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--accent-primary), transparent);
+            margin: 1.5rem auto;
+            position: relative;
+        }
+        
+        .arrow-down::after {
+            content: '▼';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+        }
+        
+        .blend-visual {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .blend-equation {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            color: var(--accent-tertiary);
+        }
+        
+        .blend-result {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-top: 1.5rem;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+        
+        .sound-pool {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .sound {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid var(--accent-secondary);
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .weight-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-tertiary);
+            color: var(--bg-dark);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .final-word {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 2rem 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+        
+        .interactive-note {
+            background: rgba(255, 107, 157, 0.1);
+            border: 2px solid var(--accent-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .interactive-note h3 {
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+        
+        @media (max-width: 968px) {
+            .flow-step {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .flow-step:nth-child(even) .step-visual,
+            .flow-step:nth-child(even) .step-content {
+                order: initial;
+            }
+            
+            .step-number {
+                position: static;
+                transform: none;
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GlotBlocks Process Flow</h1>
+            <p class="subtitle">How the Ontological Blender Creates Words</p>
+        </header>
+        
+        <div class="flow-container">
+            <!-- Step 1: Define Anchors -->
+            <div class="flow-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h2 class="step-title">Define Conceptual Anchors</h2>
+                    <p class="step-description">
+                        Anchors are the foundational elements of your language's philosophy. They represent core concepts like fire, water, earth, metal, or wood. Each anchor has associated meanings and emotional qualities that will influence the sounds of words.
+                    </p>
+                    <div class="step-example">
+                        <strong>Example:</strong><br>
+                        🔥 Fire → hot, aggressive, fast, bright<br>
+                        💧 Water → flowing, calm, fluid, deep<br>
+                        🌍 Earth → solid, stable, grounded, heavy
+                    </div>
+                </div>
+                <div class="step-visual">
+                    <div class="visual-elements">
+                        <div class="element-box">🔥 Fire</div>
+                        <div class="element-box">💧 Water</div>
+                        <div class="element-box">🌍 Earth</div>
+                        <div class="element-box">⚡ Metal</div>
+                        <div class="element-box">🌿 Wood</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Map to Sound Pools -->
+            <div class="flow-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h2 class="step-title">Map Anchors to Sound Pools</h2>
+                    <p class="step-description">
+                        In your template, you assign phonemes (sounds) to each anchor. Fire might get harsh consonants like /k/, /t/, /sh/. Water might get flowing sounds like /l/, /m/, /w/. This creates sound symbolism where words sound like what they mean.
+                    </p>
+                    <div class="step-example">
+                        <strong>Template Mapping:</strong><br>
+                        Fire → consonants: [k, t, sh, f]<br>
+                        Fire → vowels: [a, i]<br>
+                        Water → consonants: [l, m, n, w]<br>
+                        Water → vowels: [u, o]
+                    </div>
+                </div>
+                <div class="step-visual">
+                    <div class="sound-pool">
+                        <div class="sound">k</div>
+                        <div class="sound">t</div>
+                        <div class="sound">sh</div>
+                        <div class="sound">f</div>
+                        <div class="sound">a</div>
+                        <div class="sound">i</div>
+                    </div>
+                    <div style="margin: 1rem 0; color: var(--accent-tertiary);">↓ Fire Sounds</div>
+                    <div class="sound-pool">
+                        <div class="sound">l</div>
+                        <div class="sound">m</div>
+                        <div class="sound">n</div>
+                        <div class="sound">w</div>
+                        <div class="sound">u</div>
+                        <div class="sound">o</div>
+                    </div>
+                    <div style="margin: 1rem 0; color: var(--accent-primary);">↓ Water Sounds</div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Word Gets Tagged -->
+            <div class="flow-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h2 class="step-title">Words Get Conceptual Tags</h2>
+                    <p class="step-description">
+                        When building the dictionary from WordNet, each word is analyzed for its conceptual qualities. The word "volcano" might be tagged with fire (70%), earth (30%) because it's hot lava from the ground. These percentages determine which sound pools to draw from.
+                    </p>
+                    <div class="step-example">
+                        <strong>Example Analysis:</strong><br>
+                        "volcano" →<br>
+                        &nbsp;&nbsp;fire: 70% (hot, explosive, destructive)<br>
+                        &nbsp;&nbsp;earth: 30% (mountain, stone, ground)
+                    </div>
+                </div>
+                <div class="step-visual">
+                    <div class="blend-visual">
+                        <div style="font-size: 1.5rem; margin-bottom: 1rem;">🌋 volcano</div>
+                        <div class="blend-equation">
+                            🔥 Fire <span class="weight-badge">70%</span><br>
+                            🌍 Earth <span class="weight-badge">30%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4: The Ontological Blender -->
+            <div class="flow-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h2 class="step-title">The Ontological Blender Generates</h2>
+                    <p class="step-description">
+                        The engine blends the sound pools based on the weights. With 70% fire and 30% earth, it's more likely to pick harsh sounds from the fire pool. It builds syllables following your template's patterns (like CV, CVC, etc.) and applies constraints to reject impossible combinations.
+                    </p>
+                    <div class="step-example">
+                        <strong>Generation Process:</strong><br>
+                        1. Pick onset: 70% chance → /k/ (fire)<br>
+                        2. Pick nucleus: 70% chance → /a/ (fire)<br>
+                        3. Pick coda: 30% chance → /r/ (earth)<br>
+                        4. Check constraints: ✓ passes<br>
+                        5. Result: "kar"
+                    </div>
+                </div>
+                <div class="step-visual">
+                    <div class="blend-visual">
+                        <div style="margin: 1rem 0;">
+                            <div class="sound-pool">
+                                <div class="sound">k</div>
+                                <div class="sound">a</div>
+                                <div class="sound">r</div>
+                            </div>
+                        </div>
+                        <div class="arrow-down"></div>
+                        <div class="blend-result">kar</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5: Apply Rules & Morphology -->
+            <div class="flow-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h2 class="step-title">Apply Orthography & Morphology</h2>
+                    <p class="step-description">
+                        The raw phonetic word goes through orthography rules (spelling transformations) and can have morphology suffixes added for grammar. Fire-aligned suffixes might mark violent verbs, water-aligned suffixes might mark states of being.
+                    </p>
+                    <div class="step-example">
+                        <strong>Final Transformations:</strong><br>
+                        kar → (orthography) → kar<br>
+                        + noun suffix -um → karum<br>
+                        <br>
+                        <strong>Result:</strong> "karum" = volcano
+                    </div>
+                </div>
+                <div class="step-visual">
+                    <div class="final-word">karum</div>
+                    <div style="text-align: center; color: var(--text-muted); margin-top: 1rem;">
+                        Your constructed word is born! 🎉
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="interactive-note">
+            <h3>💡 The Magic of Sound Symbolism</h3>
+            <p>By linking concepts to sounds, your language develops a natural "feel" where words for similar concepts sound similar. Fire words will be harsh and sharp, water words will flow and glide. This makes the language more intuitive and immersive!</p>
+        </div>
+    </div>
+</body>
+</html>

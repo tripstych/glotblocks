@@ -6,7 +6,7 @@ import os
 import threading
 import queue
 import json
-from conlang_language_paths import list_languages, get_dictionary_file, get_language_dir
+from conlang_language_paths import list_languages, get_language_dir, get_dictionary_file
 
 class ConlangLauncher:
     def __init__(self, root):
@@ -53,7 +53,7 @@ class ConlangLauncher:
         editor_frame = ttk.LabelFrame(root, text="Editors", padding=10)
         editor_frame.pack(fill="x", padx=20, pady=5)
         
-        ttk.Button(editor_frame, text="✨ New Language Wizard", command=self.launch_wizard, width=25).pack(pady=3)
+        ttk.Button(editor_frame, text="✨ Language Wizard", command=self.launch_wizard, width=25).pack(pady=3)
         ttk.Button(editor_frame, text="Edit Anchors", command=self.launch_edit_anchors, width=25).pack(pady=3)
         ttk.Button(editor_frame, text="Edit Templates", command=self.launch_edit_templates, width=25).pack(pady=3)
         
@@ -68,7 +68,6 @@ class ConlangLauncher:
         util_frame = ttk.LabelFrame(root, text="Utilities", padding=10)
         util_frame.pack(fill="x", padx=20, pady=5)
         
-        ttk.Button(util_frame, text="Translate (CLI)", command=self.launch_translate, width=25).pack(pady=3)
         ttk.Button(util_frame, text="Interactive Translator", command=self.open_translator_window, width=25).pack(pady=3)
         
         # Translator instance (lazy loaded)
@@ -190,9 +189,6 @@ class ConlangLauncher:
             messagebox.showerror("Error", f"Failed to launch build:\n{e}")
             self.status_var.set("Error")
 
-    def launch_translate(self):
-        self.run_script("conlang_translate.py")
-    
     def refresh_languages(self):
         """Refresh the language dropdown with available languages"""
         existing_langs = list_languages()
@@ -215,7 +211,7 @@ class ConlangLauncher:
         
         try:
             from conlang_translate import ConlangTranslator
-            from language_paths import get_suffixes_file
+            from conlang_language_paths import get_suffixes_file
             suffix_path = get_suffixes_file(language)
             self.translator = ConlangTranslator.from_json(lexicon_path, suffix_file=suffix_path)
             return True
@@ -231,14 +227,14 @@ class ConlangLauncher:
         # Create new window
         trans_win = tk.Toplevel(self.root)
         trans_win.title("Interactive Translator")
-        trans_win.geometry("600x500")
+        trans_win.geometry("600x300")
         trans_win.resizable(True, True)
         
         # Input section
         input_frame = ttk.LabelFrame(trans_win, text="English Input", padding=10)
         input_frame.pack(fill="x", padx=10, pady=5)
         
-        input_text = scrolledtext.ScrolledText(input_frame, height=0, wrap=tk.WORD, font=("Consolas", 11))
+        input_text = ttk.Entry(input_frame, font=("Consolas", 11))
         input_text.pack(fill="x", expand=False)
         
         # Buttons
@@ -246,7 +242,7 @@ class ConlangLauncher:
         btn_frame.pack(fill="x", padx=10, pady=5)
         
         def do_translate():
-            text = input_text.get("1.0", tk.END).strip()
+            text = input_text.get().strip()
             if not text:
                 return
             try:
@@ -255,7 +251,7 @@ class ConlangLauncher:
                 output_text.delete("1.0", tk.END)
                 output_text.insert("1.0", result)
                 output_text.config(state=tk.DISABLED)
-                input_text.delete("1.0", tk.END)
+                input_text.delete(0, tk.END)
             except Exception as e:
                 messagebox.showerror("Error", f"Translation failed:\n{e}")
         
@@ -274,14 +270,13 @@ class ConlangLauncher:
         ttk.Button(btn_frame, text="Reload Dictionary", command=reload_dict, width=15).pack(side="right", padx=5)
         
         # Bind Enter key to translate
-        input_text.bind("<Return>", lambda e: (do_translate(), "break")[1])
-        input_text.bind("<Shift-Return>", lambda e: None)  # Allow Shift+Enter for newlines
+        input_text.bind("<Return>", lambda e: do_translate())
         
         # Output section
         output_frame = ttk.LabelFrame(trans_win, text="Translation Output", padding=10)
         output_frame.pack(fill="both", expand=True, padx=10, pady=5)
         
-        output_text = scrolledtext.ScrolledText(output_frame, height=12, wrap=tk.WORD, font=("Consolas", 11), state=tk.DISABLED)
+        output_text = scrolledtext.ScrolledText(output_frame, height=2, wrap=tk.WORD, font=("Consolas", 11), state=tk.DISABLED)
         output_text.pack(fill="both", expand=True)
         
         # Word count label

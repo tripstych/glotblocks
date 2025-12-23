@@ -228,7 +228,7 @@ def main():
         f.write(f"{words[word]}:{word}\n")
     f.close()
 
-    f = open("words.txt","r")
+    f = open("language_data/words.txt","r")
     words = [word.strip() for word in f.readlines()]
     f.close()
 

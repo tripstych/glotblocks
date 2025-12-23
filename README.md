@@ -34,19 +34,41 @@ Translate English sentences into your constructed language.
 
 ![Translator](screenshots/translator.png)
 
-## Quick Start
+## Installation
 
 1. Ensure Python 3.8+ is installed with tkinter
-2. Run the launcher:
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Download the spaCy English model:
+
+```bash
+python -m spacy download en_core_web_lg
+```
+
+4. Download NLTK WordNet data:
+
+```python
+import nltk
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+```
+
+## Quick Start
+
+1. Run the launcher:
 
 ```bash
 python main.py
 ```
 
-3. Use the **Language Wizard** to create a new language, or select an existing one from the dropdown
-4. Edit **Anchors** and **Templates** to customize your language
-5. **Build Data** then **Build Dictionaries** to generate the lexicon
-6. Use the **Interactive Translator** to translate text
+2. Use the **Language Wizard** to create a new language, or select an existing one from the dropdown
+3. Edit **Anchors** and **Templates** to customize your language
+4. **Build Data** then **Build Dictionaries** to generate the lexicon
+5. Use the **Interactive Translator** to translate text
 
 ## File Structure
 

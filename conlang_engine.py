@@ -16,9 +16,13 @@ class ConlangEngine:
     - CRITICAL: Raises exceptions if tags are missing or generation fails (Fail Fast).
     """
 
-    def __init__(self, json_path: str):
+    def __init__(self, json_path: str, seed: int = None):
         self.json_path = json_path
         self.config = self._load_config(json_path)
+
+        if seed is not None:
+            random.seed(seed)
+
 
         self.lexicon = {} 
 
@@ -202,8 +206,8 @@ class ConlangEngine:
         if not shapes_weights:
             return None
         
-        shapes = list(shapes_weights.keys())
-        weights = [max(w, 0.0) for w in shapes_weights.values()]
+        shapes = sorted(shapes_weights.keys())
+        weights = [max(shapes_weights[s], 0.0) for s in shapes]
         
         if sum(weights) == 0:
             chosen_template = random.choice(shapes)
@@ -220,9 +224,9 @@ class ConlangEngine:
             slot_pool = pools.get(ch, {})
             any_pool = pools.get("any", {})
 
-            # Gather all unique candidates
+            # Gather all unique candidates (sorted for reproducibility with seed)
             candidates = set(slot_pool.keys()) | set(any_pool.keys())
-            candidate_list = list(candidates)
+            candidate_list = sorted(candidates)
             
             if not candidate_list:
                 return None
@@ -362,17 +366,3 @@ class ConlangEngine:
                 for tag, count in sorted_tags:
                     f.write(f"{tag}\t{count}\n")
             print(f"Full report saved to: {output_file}")
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-    here = os.path.dirname(os.path.abspath(__file__))
-    json_path = os.path.join(here, "conlang_template.json")
-    
-    try:
-        engine = ConlangEngine(json_path)
-    except Exception as e:
-        logging.error(f"Failed to initialize: {e}")
-        exit(1)
-
-    print("--- Engine Initialized ---")
-

@@ -30,8 +30,12 @@ parser.add_argument('--source', type=str, help='Input file (overrides language)'
 parser.add_argument('--engine', type=str, help='Conlang engine configuration file (overrides language)')
 parser.add_argument('--output', type=str, help='Output file (overrides language)')
 parser.add_argument('--language', type=str, default='default', help='Language name')
+parser.add_argument('--seed', type=int, default=42, help='Random seed for reproducibility')
+
 
 args = parser.parse_args()
+
+seed = args.seed if args.seed else None
 
 language = args.language
 
@@ -83,7 +87,7 @@ def blend_with_grammar(base_tags, grammar_type, morphology):
 
 
 def main():
-    engine = ConlangEngine(engine_config)
+    engine = ConlangEngine(engine_config, seed)
     
     with open(source_file, 'r', encoding='utf-8') as f:
         source_data = json.load(f)
@@ -238,6 +242,16 @@ def main():
     #         print("missing:",word)
 
 
+    # Add metadata for reproducibility
+    from datetime import datetime
+    dictionary_output["_meta"] = {
+        "seed": seed,
+        "generated": datetime.now().isoformat(),
+        "language": language,
+        "source_file": source_file,
+        "engine_config": engine_config
+    }
+    
     print(f"Dictionary saved to {output_data_file}")
     with open(output_data_file, 'w') as f:
         json.dump(dictionary_output, f, indent=2)

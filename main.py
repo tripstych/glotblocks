@@ -29,10 +29,6 @@ class ConlangLauncher:
         # Language Name Input
         lang_frame = ttk.Frame(root)
         lang_frame.pack(fill="x", padx=20, pady=5)
-        
-        self.status_var = tk.StringVar(value="-Build Status-")
-        status_bar = ttk.Label(root, textvariable=self.status_var, relief="sunken", anchor="w")
-        status_bar.pack(fill="x", side="top", padx=5, pady=5)
 
         ttk.Label(lang_frame, text="Language:").pack(side="left", padx=5)
         self.language_var = tk.StringVar(value="default")
@@ -57,12 +53,28 @@ class ConlangLauncher:
         ttk.Button(editor_frame, text="Edit Anchors", command=self.launch_edit_anchors, width=25).pack(pady=3)
         ttk.Button(editor_frame, text="Edit Templates", command=self.launch_edit_templates, width=25).pack(pady=3)
         
+        # Build Status
+        self.status_var = tk.StringVar(value="-Build Status-")
+        status_bar = ttk.Label(root, textvariable=self.status_var, relief="sunken", anchor="w")
+        status_bar.pack(fill="x", padx=5, pady=5)
+        
+        # Seed Input (for Build Dictionaries)
+        seed_frame = ttk.Frame(root)
+        seed_frame.pack(fill="x", padx=20, pady=5)
+        
+        ttk.Label(seed_frame, text="*Seed:").pack(side="left", padx=5)
+        self.seed_var = tk.StringVar(value="42")
+        seed_entry = ttk.Entry(seed_frame, textvariable=self.seed_var, width=10)
+        seed_entry.pack(side="left", padx=5)
+        ttk.Button(seed_frame, text="Random", width=7, command=self.randomize_seed).pack(side="left", padx=2)
+        
         # Build Section
         build_frame = ttk.LabelFrame(root, text="Build Tools", padding=10)
         build_frame.pack(fill="x", padx=20, pady=5)
         
-        ttk.Button(build_frame, text="Build Data", command=self.launch_build_data, width=25).pack(pady=3)
+        ttk.Button(build_frame, text="*Build Data", command=self.launch_build_data, width=25).pack(pady=3)
         ttk.Button(build_frame, text="Build Dictionaries", command=self.launch_build_dictionaries, width=25).pack(pady=3)
+        ttk.Label(build_frame, text="*Build Data takes a while").pack(side="left", padx=5)
         
         # Utilities Section
         util_frame = ttk.LabelFrame(root, text="Utilities", padding=10)
@@ -166,29 +178,36 @@ class ConlangLauncher:
             return
         
         language = self.language_var.get().strip() or "default"
-        output_file = get_language_dir(language)  # For status display
-        
-        # Reset counter file
-        counter_path = os.path.join(self.script_dir, ".tmp.counter")
-        try:
-            with open(counter_path, 'w') as f:
-                f.write("0")
-        except:
-            pass
         
         self.status_var.set("Building dictionary...")
         self.root.update()
         
-        # Start monitoring thread
-        self.start_monitoring_thread(output_file)
-        
         try:
             cmd = [sys.executable, script_path, "--language", language]
-            subprocess.Popen(cmd, cwd=self.script_dir)
+            # Add seed argument
+            seed_str = self.seed_var.get().strip()
+            if seed_str:
+                try:
+                    seed_val = int(seed_str)
+                    cmd.extend(["--seed", str(seed_val)])
+                except ValueError:
+                    pass  # Ignore invalid seed values
+            
+            def run_and_notify():
+                proc = subprocess.Popen(cmd, cwd=self.script_dir)
+                proc.wait()
+                self.msg_queue.put("Dictionary build finished")
+            
+            threading.Thread(target=run_and_notify, daemon=True).start()
         except Exception as e:
             messagebox.showerror("Error", f"Failed to launch build:\n{e}")
             self.status_var.set("Error")
 
+    def randomize_seed(self):
+        """Generate a random seed value"""
+        import random
+        self.seed_var.set(str(random.randint(1, 999999)))
+    
     def refresh_languages(self):
         """Refresh the language dropdown with available languages"""
         existing_langs = list_languages()

@@ -6,6 +6,7 @@ A comprehensive toolkit for creating constructed languages using an "ontological
 
 ## Features
 
+- **Procedural Generation** Feed it a seed number.
 - **Language Wizard** - Step-by-step guide to create new languages
 - **Anchors Editor** - Define conceptual categories (elements) for your language
 - **Templates Editor** - Configure phonology, syllable structures, morphology, and orthography
